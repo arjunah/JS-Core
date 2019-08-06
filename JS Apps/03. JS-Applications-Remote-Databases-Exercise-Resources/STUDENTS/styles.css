@@ -43,3 +43,12 @@ table tbody tr:nth-child(even) button{
 table tr:hover{
     text-decoration: underline;
 }
+
+#createStudent {
+    margin: 0 auto;
+    padding: 20px;
+    width: 10%;
+}
+input {
+    margin-bottom: 10px;
+}
