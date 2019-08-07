@@ -45,7 +45,8 @@ table tr:hover{
 }
 
 #createStudent {
-    margin: 0 auto;
+    margin-top: 2%;
+    margin-left: 40%;
     padding: 20px;
     width: 10%;
 }
