@@ -9,4 +9,6 @@ const app = Sammy("#main", function() {
     this.post("#/register", userController.register);
 });
 
-(() => app.run("#/home"))();
+(() => {
+    app.run("#/home")
+})();
