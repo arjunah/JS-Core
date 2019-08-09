@@ -1,9 +1,11 @@
 <div class="container">
-        <a href="#" class="btn btn-default">Create Team</a>
-    
+    {{> header}}
+    <a href="#/create-team" class="btn btn-default">Create Team</a>
     <h1>Catalog Page</h1>
     <div>
-        
+        {{#each teams}}
+            {{> team}}
+        {{/each}}
     </div>
 </div>
-
+{{> footer}}

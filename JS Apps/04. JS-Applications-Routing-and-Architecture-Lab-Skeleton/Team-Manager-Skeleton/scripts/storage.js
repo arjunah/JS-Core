@@ -1,25 +1,25 @@
-const storage = function() {
+const storage = function () {
 
     const appKey = "kid_BkSrKTgmr";
     const appSecret = "568a763be1964b8cad67d05563ec0497";
 
     const baseURL = "https://baas.kinvey.com/";
     const userURL = `${baseURL}user/${appKey}/`;
-    const teamsURL = `${baseURL}appdata/${appKey}`;
+    const teamsURL = `${baseURL}appdata/${appKey}/teams/`;
 
 
     function createHeaders(authType, username, password) {
 
         let auth = "";
         switch (authType) {
-            case "register": auth = `Basic ${btoa(`${appKey}:${appSecret}`)}`; 
-            break;
+            case "register": auth = `Basic ${btoa(`${appKey}:${appSecret}`)}`;
+                break;
 
-            case "login": auth = `Basic ${btoa(`${username}:${password}`)}`; 
-            break;
+            case "login": auth = `Basic ${btoa(`${username}:${password}`)}`;
+                break;
 
-            case "loggedIn": auth = `Kinvey ${sessionStorage.getItem(authtoken)}`; 
-            break;
+            case "loggedIn": auth = `Kinvey ${sessionStorage.getItem("authtoken")}`;
+                break;
         };
 
         const headers = {
@@ -32,24 +32,16 @@ const storage = function() {
     }
 
     function saveUserSession(userInfo) {
-        
-        return new Promise(async function(resolve) {
-            if (userInfo) {
 
-                await (() => {
-                    const user = userInfo;
-                    const authtoken = user._kmd.authtoken;
-                    const username = user.username;
-                    const teamCreator = user._id;
-        
-                    sessionStorage.setItem("authtoken", authtoken);
-                    sessionStorage.setItem("username", username);
-                    sessionStorage.setItem("teamCreator", teamCreator);
-                })();
-                
-                resolve();    
-            }
-        })   
+        const authtoken = userInfo._kmd.authtoken;
+        const username = userInfo.username;
+        const userId = userInfo._id;
+        const teamId = userInfo.teamId;
+
+        sessionStorage.setItem("authtoken", authtoken);
+        sessionStorage.setItem("username", username);
+        sessionStorage.setItem("userId", userId);
+        sessionStorage.setItem("teamId", teamId);
     }
 
     return {

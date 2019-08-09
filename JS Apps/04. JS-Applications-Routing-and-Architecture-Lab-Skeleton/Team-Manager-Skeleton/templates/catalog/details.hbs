@@ -1,20 +1,26 @@
 <div class="container">
+    {{> header}}
     <div class="details-box">
-        <span class="titlebar">{name} details</span>
+        <span class="titlebar">{{team.name}} details</span>
         <span class="spanner">Team members</span>
         <div>
-           
-                <p>No member info</p>
-            
+        {{#if teamMembers}}
+            {{#each teamMembers}}
+                {{> teamMember}}
+            {{/each}}
+        {{else}}
+            <p>No member info</p>
+        {{/if}}
         </div>
         <span class="spanner">Description</span>
-        
-            <p>{comment}</p>
-        
+        {{#if team.comment}}
+            <p>{{team.comment}}</p>
+        {{else}}
             <p>No description</p>
-        
+        {{/if}}
         <span class="spanner">Team management</span>
-            
+         {{> teamControls}}   
     </div>
 </div>
 
+{{> footer}}

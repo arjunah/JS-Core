@@ -1,7 +1,8 @@
-
-    <a href="#" class="btn btn-default">Edit Info</a>
-
-
-    <a href="#" class="btn btn-default">Leave Team</a>
-
-    <a href="#" class="btn btn-default">Join Team</a>
+    {{#if isTeamMember}}
+        {{#if teamCreator}}
+        <a href="#/edit-team" class="btn btn-default">Edit Info</a>
+        {{/if}}
+        <a href="#/leave-team/{{userId}}" class="btn btn-default">Leave Team</a>
+    {{else}}
+        <a href="#/join-team/{{currentTeamId}}" class="btn btn-default">Join Team</a>
+    {{/if}}
