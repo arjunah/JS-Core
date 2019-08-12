@@ -16,15 +16,12 @@ const requester = function() {
     }
 
     function edit(url, headers, body) {
+        
         return fetch(url, {
             method: "PUT",
             headers: headers,
             body: JSON.stringify(body)
         }).then(responseHandler)
-    }
-
-    function del() {
-        
     }
 
     function responseHandler(response) {
@@ -42,7 +39,6 @@ const requester = function() {
     return {
         get,
         post,
-        edit,
-        del
+        edit
     }
 }();

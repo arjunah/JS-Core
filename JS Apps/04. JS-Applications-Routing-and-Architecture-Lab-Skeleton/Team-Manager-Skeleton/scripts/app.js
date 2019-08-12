@@ -25,6 +25,9 @@ const app = Sammy("#main", function() {
     //create-team
     this.get("#/create-team", router.loadCreate)
     this.post("#/create-team", teamController.createTeam)
+    //edit-team
+    this.get("#/edit-team/:currentTeamId", router.loadEdit)
+    this.post("#/edit-team/:currentTeamId", teamController.editTeam)
 });
 
 (() => {

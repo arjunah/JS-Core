@@ -38,7 +38,7 @@ const teamController = function() {
             })
     }
 
-    function leaveTeam(context) {
+    function leaveTeam() {
 
         sessionStorage.setItem("teamId", "undefined");
 
@@ -46,27 +46,27 @@ const teamController = function() {
 
         const body = {}
 
-        requester.edit(storage.userURL + context.params.userId, headers, body)
+        requester.edit(storage.userURL + this.params.userId, headers, body)
             .then(res => {
                 console.log("Left the team!");
                 this.redirect("#/catalog")
             })
     }
 
-    function joinTeam(context) {
+    function joinTeam() {
         
-        sessionStorage.setItem("teamId", context.params.teamId)
+        sessionStorage.setItem("teamId", this.params.teamId)
 
         const headers = storage.createHeaders("loggedIn");
 
         const body = {
-            teamId: context.params.teamId
+            teamId: this.params.teamId
         }
 
         requester.edit(storage.userURL + sessionStorage.getItem("userId"), headers, body)
             .then(res => {
                 console.log("Joined a team!");
-                context.redirect("#/catalog")
+                this.redirect("#/catalog")
             })
     }
 
@@ -88,6 +88,17 @@ const teamController = function() {
 
     function editTeam() {
 
+        const headers = storage.createHeaders("loggedIn");
+
+        body = {
+            name: this.params.name,
+            comment: this.params.comment
+        }
+
+        requester.edit(storage.teamsURL + this.params.currentTeamId, headers, body)
+            .then(res => {
+                this.redirect("#/catalog");
+            })
     }
 
     return {

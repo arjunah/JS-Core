@@ -1,8 +1,8 @@
 const router = function() {
 
-    function loadHome(context) {
+    function loadHome() {
 
-        checkLogIn(context);
+        checkLogIn(this);
 
         this.loadPartials({
             header: "./templates/common/header.hbs",
@@ -12,9 +12,9 @@ const router = function() {
         })
     }
 
-    function loadAbout(context) {
+    function loadAbout() {
 
-        checkLogIn(context);
+        checkLogIn(this);
 
         this.loadPartials({
             header: "./templates/common/header.hbs",
@@ -46,9 +46,9 @@ const router = function() {
         })
     }
     
-    async function loadCatalog(context) {
+    async function loadCatalog() {
 
-        checkLogIn(context);
+        checkLogIn(this);
 
         this.teams = await teamController.getTeams();
 
@@ -61,13 +61,14 @@ const router = function() {
         })
     }
 
-    async function loadTeamDetails(context) {
+    async function loadTeamDetails() {
 
-        checkLogIn(context);
+        checkLogIn(this);
 
-        const currentTeamId = context.params.currentTeamId;
+        const currentTeamId = this.params.currentTeamId;
 
         this.currentTeamId = currentTeamId;
+
         this.team = await teamController.getCurrentTeam(currentTeamId);
         this.teamMembers = await teamController.getTeamMembers(currentTeamId);
 
@@ -93,9 +94,9 @@ const router = function() {
         })
     }
 
-    function loadCreate(context) {
+    function loadCreate() {
 
-        checkLogIn(context);
+        checkLogIn(this);
 
         this.loadPartials({
             header: "./templates/common/header.hbs",
@@ -105,6 +106,24 @@ const router = function() {
         }).then(function() {
             this.partial("./templates/create/createPage.hbs")
         }) 
+    }
+
+    async function loadEdit() {
+
+        checkLogIn(this);
+
+        this.team = await teamController.getCurrentTeam(this.params.currentTeamId)
+
+        this.currentTeamId = this.params.currentTeamId;
+        
+        this.loadPartials({
+            header: "./templates/common/header.hbs",
+            footer: "./templates/common/footer.hbs",
+            editForm: "./templates/edit/editForm.hbs"
+
+        }).then(function() {
+            this.partial("./templates/edit/editPage.hbs")
+        })
     }
 
     function checkLogIn(context) {
@@ -121,7 +140,7 @@ const router = function() {
             }
 
         } else {
-            this.isLoggedIn = false;
+            context.isLoggedIn = false;
         }
     }
 
@@ -132,7 +151,8 @@ const router = function() {
         loadLogin,
         loadCatalog,
         loadTeamDetails,
-        loadCreate
+        loadCreate,
+        loadEdit
     }
 
 }();
