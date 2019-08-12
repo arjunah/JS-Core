@@ -7,7 +7,7 @@ const requester = function() {
         }).then(responseHandler)
     }
 
-    function post(url, headers, body) {   
+    function post(url, headers, body) { 
         return fetch(url, {
                 method: "POST",
                 headers: headers,

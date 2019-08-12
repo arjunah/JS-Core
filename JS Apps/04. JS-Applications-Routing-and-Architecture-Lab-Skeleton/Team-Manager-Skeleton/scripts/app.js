@@ -22,6 +22,9 @@ const app = Sammy("#main", function() {
     this.get("#/leave-team/:userId", teamController.leaveTeam)
     //join-team
     this.get("#/join-team/:teamId", teamController.joinTeam)
+    //create-team
+    this.get("#/create-team", router.loadCreate)
+    this.post("#/create-team", teamController.createTeam)
 });
 
 (() => {

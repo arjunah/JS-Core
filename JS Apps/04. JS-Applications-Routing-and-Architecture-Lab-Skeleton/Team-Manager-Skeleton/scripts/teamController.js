@@ -46,7 +46,7 @@ const teamController = function() {
 
         const body = {}
 
-        return requester.edit(storage.userURL + context.params.userId, headers, body)
+        requester.edit(storage.userURL + context.params.userId, headers, body)
             .then(res => {
                 console.log("Left the team!");
                 this.redirect("#/catalog")
@@ -63,15 +63,27 @@ const teamController = function() {
             teamId: context.params.teamId
         }
 
-        return requester.edit(storage.userURL + sessionStorage.getItem("userId"), headers, body)
+        requester.edit(storage.userURL + sessionStorage.getItem("userId"), headers, body)
             .then(res => {
                 console.log("Joined a team!");
-                this.redirect("#/catalog")
+                context.redirect("#/catalog")
             })
     }
 
     function createTeam() {
 
+        const headers = storage.createHeaders("loggedIn");
+
+        const body = {
+            name: this.params.name,
+            comment: this.params.comment
+        }
+
+        requester.post(storage.teamsURL, headers, body)
+            .then(res => {
+                this.params.teamId = res._id;
+                joinTeam(this);
+            })
     }
 
     function editTeam() {

@@ -93,6 +93,20 @@ const router = function() {
         })
     }
 
+    function loadCreate(context) {
+
+        checkLogIn(context);
+
+        this.loadPartials({
+            header: "./templates/common/header.hbs",
+            footer: "./templates/common/footer.hbs",
+            createForm: "./templates/create/createForm.hbs"
+
+        }).then(function() {
+            this.partial("./templates/create/createPage.hbs")
+        }) 
+    }
+
     function checkLogIn(context) {
         if (sessionStorage.getItem("authtoken")) {
             context.isLoggedIn = true;
@@ -117,7 +131,8 @@ const router = function() {
         loadRegister,
         loadLogin,
         loadCatalog,
-        loadTeamDetails
+        loadTeamDetails,
+        loadCreate
     }
 
 }();
