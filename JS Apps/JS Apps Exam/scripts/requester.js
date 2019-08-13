@@ -7,8 +7,7 @@ const requester = function() {
         }).then(responseHandler)
     }
 
-    function post(url, headers, body) {
-        console.log(url, headers, body)   
+    function post(url, headers, body) { 
         return fetch(url, {
                 method: "POST",
                 headers: headers,
@@ -32,7 +31,7 @@ const requester = function() {
     }
 
     function responseHandler(response) {
-        console.log(response)
+    
         if (response.status >= 400) {
             throw new Error(`Error!! ${response.status}: ${response.statusText}`)
         }

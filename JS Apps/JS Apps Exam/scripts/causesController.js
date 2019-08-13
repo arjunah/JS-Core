@@ -13,11 +13,11 @@ const causesController = function() {
     function getCurrentCause(currentCauseId) {
 
         const headers = storage.createHeaders("loggedIn");
-
+        
         return requester.get(storage.causesURL + currentCauseId, headers)
-            .then(cause => {
-                return cause
-            }).catch(console.error())
+            // .then(cause => {
+            //     return cause
+            // }).catch(console.error())
     }
 
     function createCause() {
@@ -35,31 +35,42 @@ const causesController = function() {
             collectedFunds: 0
         }
         
-        return requester.post(storage.causesURL, headers, body)
-            .then(this.redirect("#/dashboard")).catch(console.error())
+        requester.post(storage.causesURL, headers, body)
+            .then(this.redirect("#/dashboard"))
     }
 
-    async function makeDonation(currentCauseId) {
+    function makeDonation() {
+        debugger;
 
+        const currentCauseId = this.params.currentCauseId;
+
+        let cause = getCurrentCause(currentCauseId);
+
+        console.log(cause)
+        
         const headers = storage.createHeaders("loggedIn");
 
-        let cause = JSON.parse(await causesController.getCurrentCause(currentCauseId));
+        cause.collectedFunds = parseFloat(cause.collectedFunds) + parseFloat(this.params.currentDonation);
+
+        if (!cause.donors.contains(sessionStorage.getItem("username"))) {
+            cause.donors.push(sessionStorage.getItem("username"));
+        }
         
-        cause.collectedFunds += parseFloat(this.params.currentDonation);
-
-        cause.donors.push(sessionStorage.getItem("username"));
-
-        return requester.edit(storage.causesURL + currentCauseId, headers, cause)
-             .then(this.redirect(`#/cause-details/${currentCauseId}`)).catch(console.error())
+        requester.edit(storage.causesURL + currentCause, headers, cause)
+             .then(res => {
+                 this.redirect(`#/cause-details/${currentCause}`)
+             })
         
     }
 
-    function deleteCause(currentCauseId) {
+    function deleteCause() {
 
+        const currentCauseId = this.params.currentCauseId;
+        
         const headers = storage.createHeaders("loggedIn");
 
-        return requester.del(storage.causesURL + currentCauseId, headers)
-            .then(this.redirect("#/dashboard")).catch(console.error())
+        requester.del(storage.causesURL + currentCauseId, headers)
+            .then(this.redirect("#/dashboard"))
         
     }
 

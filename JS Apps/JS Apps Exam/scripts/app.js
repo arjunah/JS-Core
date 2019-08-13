@@ -30,7 +30,7 @@ const app = Sammy("#main", function() {
     this.post("#/cause-details/:currentCauseId", causesController.makeDonation)
 
     //delete cause
-    this.get("#/delete-cause", causesController.deleteCause)
+    this.get("#/delete-cause/:currentCauseId", causesController.deleteCause)
 });
 
 (() => {

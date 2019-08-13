@@ -1,8 +1,8 @@
 const router = function() {
     //home
-    function loadHome(context) {
+    function loadHome() {
 
-        checkLogIn(context);
+        checkLogIn(this);
 
         this.loadPartials({
             header: "./views/common/header.hbs",
@@ -32,9 +32,9 @@ const router = function() {
         })
     }
     
-    async function loadDashboard(context) {
+    async function loadDashboard() {
 
-        checkLogIn(context);
+        checkLogIn(this);
 
         this.causes = await causesController.getCauses();
 
@@ -47,11 +47,11 @@ const router = function() {
         })
     }
 
-    async function loadCauseDetails(context) {
+    async function loadCauseDetails() {
 
-        checkLogIn(context);
+        checkLogIn(this);
 
-        const currentCauseId = context.params.currentCauseId;
+        const currentCauseId = this.params.currentCauseId;
 
         this.currentCauseId = currentCauseId;
         this.cause = await causesController.getCurrentCause(currentCauseId);
@@ -71,9 +71,9 @@ const router = function() {
         })
     }
 
-    function loadCreate(context) {
+    function loadCreate() {
         
-        checkLogIn(context);
+        checkLogIn(this);
 
         this.loadPartials({
             header: "./views/common/header.hbs",
