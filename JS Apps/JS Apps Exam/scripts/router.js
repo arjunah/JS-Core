@@ -66,6 +66,7 @@ const router = function() {
         this.loadPartials({
             header: "./views/common/header.hbs",
             footer: "./views/common/footer.hbs",
+            donors: "./views/causes/donors.hbs"
         }).then(function() {
             this.partial("./views/causes/details.hbs")
         })

@@ -24,7 +24,11 @@
                     </p>
                     <br>
                     <p style="word-wrap: break-word;" class="text-left"><strong>Donors:</strong><br>
-                        <span>{{cause.donors}}</span>
+                        <span>
+                            {{#each cause.donors}}
+                                {{> donors}}
+                            {{/each}}
+                        </span>
                     </p>
                 </center>
             </div>

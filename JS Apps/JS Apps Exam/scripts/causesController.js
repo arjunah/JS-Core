@@ -1,4 +1,4 @@
-const causesController = function() {
+const causesController = function () {
 
     function getCauses() {
 
@@ -7,21 +7,19 @@ const causesController = function() {
         return requester.get(storage.causesURL, headers)
             .then(causes => {
                 return causes
-            }).catch(console.error())
+            })
     }
 
     function getCurrentCause(currentCauseId) {
 
         const headers = storage.createHeaders("loggedIn");
-        
+
         return requester.get(storage.causesURL + currentCauseId, headers)
-            // .then(cause => {
-            //     return cause
-            // }).catch(console.error())
+        
     }
 
     function createCause() {
-        
+
         checkInput(this.params);
 
         const headers = storage.createHeaders("loggedIn");
@@ -34,7 +32,7 @@ const causesController = function() {
             donors: [],
             collectedFunds: 0
         }
-        
+
         requester.post(storage.causesURL, headers, body)
             .then(this.redirect("#/dashboard"))
     }
@@ -44,34 +42,32 @@ const causesController = function() {
 
         const currentCauseId = this.params.currentCauseId;
 
-        let cause = getCurrentCause(currentCauseId);
+        getCurrentCause(currentCauseId).then(cause => {
+            console.log(cause);
 
-        console.log(cause)
-        
-        const headers = storage.createHeaders("loggedIn");
+            const headers = storage.createHeaders("loggedIn");
 
-        cause.collectedFunds = parseFloat(cause.collectedFunds) + parseFloat(this.params.currentDonation);
+            cause.collectedFunds = parseFloat(cause.collectedFunds) + parseFloat(this.params.currentDonation);
 
-        if (!cause.donors.contains(sessionStorage.getItem("username"))) {
-            cause.donors.push(sessionStorage.getItem("username"));
-        }
-        
-        requester.edit(storage.causesURL + currentCause, headers, cause)
-             .then(res => {
-                 this.redirect(`#/cause-details/${currentCause}`)
-             })
-        
+            if (!cause.donors.includes(sessionStorage.getItem("username"))) {
+                cause.donors.push(sessionStorage.getItem("username"));
+            }
+
+            requester.edit(storage.causesURL + currentCauseId, headers, cause)
+                .then(this.redirect(`#/cause-details/${currentCauseId}`))
+        })
+
     }
 
     function deleteCause() {
 
         const currentCauseId = this.params.currentCauseId;
-        
+
         const headers = storage.createHeaders("loggedIn");
 
         requester.del(storage.causesURL + currentCauseId, headers)
             .then(this.redirect("#/dashboard"))
-        
+
     }
 
     function checkInput(params) {
