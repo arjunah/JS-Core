@@ -38,12 +38,10 @@ const causesController = function () {
     }
 
     function makeDonation() {
-        debugger;
 
         const currentCauseId = this.params.currentCauseId;
 
         getCurrentCause(currentCauseId).then(cause => {
-            console.log(cause);
 
             const headers = storage.createHeaders("loggedIn");
 
