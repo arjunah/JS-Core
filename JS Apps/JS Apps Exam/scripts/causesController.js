@@ -20,7 +20,13 @@ const causesController = function () {
 
     function createCause() {
 
-        checkInput(this.params);
+        try {
+            checkInput(this.params)
+        } catch (err) {
+            sessionStorage.setItem("error", "You must fill in all fields!")
+            this.redirect("#/create");
+            return
+        }
 
         const headers = storage.createHeaders("loggedIn");
 
@@ -34,7 +40,14 @@ const causesController = function () {
         }
 
         requester.post(storage.causesURL, headers, body)
-            .then(this.redirect("#/dashboard"))
+            .then(cause => {
+                sessionStorage.setItem("success", "Cause successfully created!")
+                this.redirect("#/dashboard")
+            })
+            .catch(err => {
+                sessionStorage.setItem("error", "Failed to create cause, try again.")
+                this.redirect("#/create")
+            })
     }
 
     function makeDonation() {
@@ -42,19 +55,29 @@ const causesController = function () {
         const currentCauseId = this.params.currentCauseId;
 
         getCurrentCause(currentCauseId).then(cause => {
+            if (this.params.currentDonation !== "") {
+                const headers = storage.createHeaders("loggedIn");
 
-            const headers = storage.createHeaders("loggedIn");
-
-            cause.collectedFunds = parseFloat(cause.collectedFunds) + parseFloat(this.params.currentDonation);
-
-            if (!cause.donors.includes(sessionStorage.getItem("username"))) {
-                cause.donors.push(sessionStorage.getItem("username"));
-            }
-
-            requester.edit(storage.causesURL + currentCauseId, headers, cause)
-                .then(this.redirect(`#/cause-details/${currentCauseId}`))
+                cause.collectedFunds = parseFloat(cause.collectedFunds) + parseFloat(this.params.currentDonation);
+    
+                if (!cause.donors.includes(sessionStorage.getItem("username"))) {
+                    cause.donors.push(sessionStorage.getItem("username"));
+                }
+    
+                requester.edit(storage.causesURL + currentCauseId, headers, cause)
+                    .then(cause => {
+                        sessionStorage.setItem("success", "Thank you for your donation!")
+                        this.redirect(`#/cause-details/${currentCauseId}`)
+                    })
+                    .catch(err => {
+                        sessionStorage.setItem("error", "Something went wrong, try again.")
+                        this.redirect(`#/cause-details/${currentCauseId}`)
+                    })
+            } else {
+                sessionStorage.setItem("error", "You must input a valid number!")
+                this.redirect(`#/cause-details/${currentCauseId}`)
+            }  
         })
-
     }
 
     function deleteCause() {
@@ -64,7 +87,10 @@ const causesController = function () {
         const headers = storage.createHeaders("loggedIn");
 
         requester.del(storage.causesURL + currentCauseId, headers)
-            .then(this.redirect("#/dashboard"))
+            .then(cause => {
+                sessionStorage.setItem("success", "Cause successfully closed!")
+                this.redirect("#/dashboard")
+            })
 
     }
 

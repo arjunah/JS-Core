@@ -1,7 +1,9 @@
 const requester = function () {
 
     function get(url, headers) {
-        document.getElementById("loadingNotification").style.display = "block";
+        if (document.getElementById("loadingNotification")) {
+            document.getElementById("loadingNotification").style.display = "block";
+        }
         return fetch(url, {
             method: "GET",
             headers: headers
@@ -38,19 +40,25 @@ const requester = function () {
 
         if (response.status >= 400) {
 
-            document.getElementById("loadingNotification").style.display = "none";
-
+            if (document.getElementById("loadingNotification")) {
+                document.getElementById("loadingNotification").style.display = "none";
+            }
+            
             throw new Error(`Error!! ${response.status}: ${response.statusText}`)
         }
 
         if (response.status !== 204) {
 
-            document.getElementById("loadingNotification").style.display = "none";
+            if (document.getElementById("loadingNotification")) {
+                document.getElementById("loadingNotification").style.display = "none";
+            }
 
             return response.json()
         } else {
             
-            document.getElementById("loadingNotification").style.display = "none";
+            if (document.getElementById("loadingNotification")) {
+                document.getElementById("loadingNotification").style.display = "none";
+            }
 
             return "Logged out successfully!"
         }

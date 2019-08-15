@@ -1,6 +1,6 @@
 #notifications div {
     top: 4rem;
-    position: absolute;
+    position: fixed;
     border-radius: 7px;
     display: none;
     z-index: 1;

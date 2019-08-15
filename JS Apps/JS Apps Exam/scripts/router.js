@@ -5,6 +5,7 @@ const router = function() {
         checkLogIn(this);
 
         this.loadPartials({
+            notification: "./views/common/notification.hbs",
             header: "./views/common/header.hbs",
             footer: "./views/common/footer.hbs"
         }).then(function() {
@@ -13,7 +14,11 @@ const router = function() {
     }
 
     function loadRegister() {
+
+        checkLogIn(this);
+
         this.loadPartials({
+            notification: "./views/common/notification.hbs",
             header: "./views/common/header.hbs",
             footer: "./views/common/footer.hbs"
 
@@ -23,7 +28,11 @@ const router = function() {
     }
 
     function loadLogin() {
+        
+        checkLogIn(this);
+
         this.loadPartials({
+            notification: "./views/common/notification.hbs",
             header: "./views/common/header.hbs",
             footer: "./views/common/footer.hbs"
 
@@ -39,6 +48,7 @@ const router = function() {
         this.causes = await causesController.getCauses();
 
         this.loadPartials({
+            notification: "./views/common/notification.hbs",
             header: "./views/common/header.hbs",
             footer: "./views/common/footer.hbs",
             cause: "./views/causes/cause.hbs"
@@ -64,6 +74,7 @@ const router = function() {
         }
 
         this.loadPartials({
+            notification: "./views/common/notification.hbs",
             header: "./views/common/header.hbs",
             footer: "./views/common/footer.hbs",
             donors: "./views/causes/donors.hbs"
@@ -77,6 +88,7 @@ const router = function() {
         checkLogIn(this);
 
         this.loadPartials({
+            notification: "./views/common/notification.hbs",
             header: "./views/common/header.hbs",
             footer: "./views/common/footer.hbs",
 
@@ -95,6 +107,9 @@ const router = function() {
         } else {
             this.isLoggedIn = false;
         }
+
+        context.success = sessionStorage.getItem("success");
+        context.error = sessionStorage.getItem("error");
     }
 
     return {
